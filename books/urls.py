@@ -9,4 +9,9 @@ urlpatterns = [
         path('create/', author_create, name='create_author'),
         path('update/<int:pk>/', author_update, name='update_author'),
     ])),
+    path('books/', include([
+        path('create/', book_create, name='create_book'),
+        # path('update/<int:pk>/', author_update, name='update_author'),
+    ])),
+
 ]

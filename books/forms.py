@@ -29,3 +29,28 @@ class GenreForm(forms.ModelForm):
     
     def __init__(self, *args, **kwargs):
         super().__init__(*args, **kwargs)
+        
+
+class BookForm(forms.ModelForm):
+    """Форма для создания/редактирования книги"""
+    
+    class Meta:
+        model = Book
+        fields = ['name', 'description', 'author', 'language', 'year', 'genre', 'content', 'front_cover']
+        widgets = {
+            'name': forms.TextInput(),
+            'description': forms.TextInput(),
+            'year': forms.NumberInput(),
+            'author': forms.Select(),
+            'language': forms.Select(),
+            'genre': forms.Select(),
+            'content': forms.FileInput(),
+            'front_cover': forms.FileInput()
+        }
+    
+    def __init__(self, *args, **kwargs):
+        super().__init__(*args, **kwargs)
+        self.fields['author'].queryset = Author.objects.all()
+        self.fields['language'].queryset = Language.objects.all()
+        self.fields['genre'].queryset = Genre.objects.all()
+        

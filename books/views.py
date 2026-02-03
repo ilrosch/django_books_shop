@@ -23,7 +23,7 @@ def author_create(req):
     else:
         form = AuthorForm()
     
-    return render(req, "author_form.html", {
+    return render(req, "form.html", {
         "form": form,
         "title": "Добавить автора"
     })
@@ -48,8 +48,30 @@ def author_update(req, pk):
     else:
         form = AuthorForm(instance=author)
     
-    return render(req, "author_form.html", {
+    return render(req, "form.html", {
         "form": form,
         "author": author,
         "title": "Редактировать автора"
+    })
+    
+@login_required
+def book_create(req):
+    """Создание новой книги (только для администратора)"""
+
+    if not req.user.is_superuser:
+        messages.error(req, "У вас нет прав для выполнения этого действия.")
+        return redirect("main:books")
+
+    if req.method == "POST":
+        form = BookForm(req.POST, req.FILES)
+        if form.is_valid():
+            form.save()
+            messages.success(req, "Книга успешно добавлена.")
+            return redirect("main:books")
+    else:
+        form = BookForm()
+    
+    return render(req, "form.html", {
+        "form": form,
+        "title": "Добавить книгу"
     })
