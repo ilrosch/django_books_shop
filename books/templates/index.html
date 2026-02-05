@@ -3,16 +3,99 @@
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>Document</title>
+    <title>Главная</title>
   </head>
+
+  <style>
+    body {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+      font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    }
+
+    .container {
+      margin: 0 auto;
+      padding: 40px;
+      display: flex;
+      flex-direction: column;
+      gap: 16px;
+    }
+
+    .actions {
+      border-radius: 20px;
+      background: #1e1e1e;
+      padding: 30px;
+    }
+
+    .actions > select {
+      border-radius: 10px;
+      padding: 12px 24px;
+      appearance: none;
+    }
+
+    .books {
+      padding: 30px;
+      border-radius: 20px;
+      background: #f1f1f1;
+      display: grid;
+      grid-template-columns: repeat(4, 1fr);
+      gap: 20px;
+    }
+
+    .book {
+      column-count: 1;
+      border-radius: 10px;
+      padding: 16px;
+      background: #ffffff;
+    }
+
+    .book-title {
+      font-size: 24px;
+      margin-bottom: 12px;
+    }
+
+    .book-text {
+      font-size: 14px;
+    }
+
+    .book-btn {
+      padding: 8px 16px;
+      margin-top: 6px;
+    }
+
+    .book-price {
+      margin-top: 12px;
+      color: brown;
+    }
+  </style>
+
   <body>
-    <ul>
-      <li>
-        <a href="/books/create/">Добавить книгу</a>
-      </li>
-      <li>
-        <a href="/authors/create/">Добавить автора</a>
-      </li>
-    </ul>
+    <div class="container">
+      <div class="actions">
+        <select name="create" onchange="window.location.href = this.value">
+          <option value="#">Выберите, что нужно добавить...</option>
+          <option value="{% url 'main:create_author' %}">Aвтор</option>
+          <option value="{% url 'main:create_book' %}">Книга</option>
+          <option value="{% url 'main:create_genre' %}">Жанр</option>
+          <option value="{% url 'main:create_lang' %}">Язык</option>
+        </select>
+      </div>
+
+      <div class="books">
+        {% for book in books %}
+        <div class="book">
+          <div class="book-title"><b>{{ book.name }}</b></div>
+          <div class="book-text"><b>Жанр</b>: {{ book.genre }}</div>
+          <div class="book-text"><b>Автор</b>: {{ book.author }}</div>
+          <div class="book-title book-price"><b>{{ book.price }}</b> &#8381;</div>
+          <button class="book-btn">В корзину</button>
+        </div>
+
+        {% empty %}
+        <div>Пусто</div>
+        {% endfor %}
+      </div>
+    </div>
   </body>
 </html>

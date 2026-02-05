@@ -31,16 +31,31 @@ class GenreForm(forms.ModelForm):
         super().__init__(*args, **kwargs)
         
 
+class LanguageForm(forms.ModelForm):
+    """Форма для создания/редактирования языка"""
+    
+    class Meta:
+        model = Language
+        fields = ['name']
+        widgets = {
+            'name': forms.TextInput(),
+        }
+    
+    def __init__(self, *args, **kwargs):
+        super().__init__(*args, **kwargs)
+        
+
 class BookForm(forms.ModelForm):
     """Форма для создания/редактирования книги"""
     
     class Meta:
         model = Book
-        fields = ['name', 'description', 'author', 'language', 'year', 'genre', 'content', 'front_cover']
+        fields = ['name', 'description', 'author', 'price', 'language', 'year', 'genre', 'content', 'front_cover']
         widgets = {
             'name': forms.TextInput(),
             'description': forms.TextInput(),
             'year': forms.NumberInput(),
+            'price': forms.NumberInput(),
             'author': forms.Select(),
             'language': forms.Select(),
             'genre': forms.Select(),

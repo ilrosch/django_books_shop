@@ -35,6 +35,7 @@ class Book(models.Model):
     name = models.CharField(max_length=255, verbose_name="Название")
     description = models.TextField(verbose_name="Описание")
     year = models.PositiveIntegerField(verbose_name="Год")
+    price = models.PositiveIntegerField(verbose_name="Цена", default=0)
     content = models.FileField(upload_to='books/data/contents', verbose_name="Текст книги", blank=True)
     front_cover = models.FileField(upload_to='books/data/images', verbose_name="Обложка книги", blank=True)
     language = models.ForeignKey(Language, on_delete=models.PROTECT, related_name="books", verbose_name="Язык")

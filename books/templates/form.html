@@ -17,6 +17,19 @@
       padding: 40px;
       background-color: #1e1e1e;
       border-radius: 10px;
+
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+    }
+
+    .header-btn {
+      display: block;
+      border-radius: 2px;
+      background: #f1f1f1;
+      padding: 12px 24px;
+      text-decoration: none;
+      color: #1e1e1e;
     }
 
     .title {
@@ -69,6 +82,7 @@
     <div class="container">
       <header class="header">
         <h1 class="title">{{ title }}</h1>
+        <a href="/" class="header-btn">На главную</a>
       </header>
       <main class="main">
         <form class="form" method="post" enctype="multipart/form-data">

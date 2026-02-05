@@ -19,7 +19,7 @@ class LanguagesAdmin(admin.ModelAdmin):
 
 @admin.register(Book)
 class BooksAdmin(admin.ModelAdmin):
-    list_display = ['id', 'name', 'author', 'language', 'genre', 'updated_at', 'created_at']
+    list_display = ['id', 'name', 'author', 'language', 'genre', 'price', 'updated_at', 'created_at']
     
     
 @admin.register(Order)

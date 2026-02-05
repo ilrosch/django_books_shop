@@ -4,7 +4,10 @@ from django.contrib import messages
 from books.forms import *
 
 def books_page(req):
-    return render(req, "index.html")
+    books = Book.objects.all()
+    return render(req, "index.html", context={
+        "books": books
+    })
 
 @login_required
 def author_create(req):
@@ -54,6 +57,7 @@ def author_update(req, pk):
         "title": "Редактировать автора"
     })
     
+
 @login_required
 def book_create(req):
     """Создание новой книги (только для администратора)"""
@@ -74,4 +78,50 @@ def book_create(req):
     return render(req, "form.html", {
         "form": form,
         "title": "Добавить книгу"
+    })
+    
+
+@login_required
+def genre_create(req):
+    """Создание нового жанра (только для администратора)"""
+
+    if not req.user.is_superuser:
+        messages.error(req, "У вас нет прав для выполнения этого действия.")
+        return redirect("main:books")
+
+    if req.method == "POST":
+        form = GenreForm(req.POST)
+        if form.is_valid():
+            form.save()
+            messages.success(req, "Жанр успешно добавлен.")
+            return redirect("main:books")
+    else:
+        form = GenreForm()
+    
+    return render(req, "form.html", {
+        "form": form,
+        "title": "Добавить жанр"
+    })
+
+
+@login_required
+def language_create(req):
+    """Создание нового языка (только для администратора)"""
+
+    if not req.user.is_superuser:
+        messages.error(req, "У вас нет прав для выполнения этого действия.")
+        return redirect("main:books")
+
+    if req.method == "POST":
+        form = LanguageForm(req.POST)
+        if form.is_valid():
+            form.save()
+            messages.success(req, "Язык успешно добавлен.")
+            return redirect("main:books")
+    else:
+        form = LanguageForm()
+    
+    return render(req, "form.html", {
+        "form": form,
+        "title": "Добавить язык"
     })
