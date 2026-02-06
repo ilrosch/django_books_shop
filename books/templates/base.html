@@ -1,0 +1,84 @@
+<!doctype html>
+<html lang="ru">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>{% block title %}Books Shop{% endblock %}</title>
+  </head>
+
+  <style>
+    body {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+
+      font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+      font-size: 16px;
+      font-weight: 400;
+    }
+
+    .bg-dark {
+      background: #1e1e1e;
+    }
+
+    .bg-light {
+      background: #f1f1f1;
+    }
+
+    .dark {
+      color: #1e1e1e;
+    }
+
+    .light {
+      color: #f1f1f1;
+    }
+
+    .block {
+      padding: 30px;
+      border-radius: 20px;
+    }
+
+    .block-row {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 16px;
+    }
+
+    .selector, form select {
+      padding: 12px;
+      border-radius: 10px;
+      appearance: none;
+      border: none;
+    }
+
+    .input, form  input {
+      padding: 12px;
+      border-radius: 10px;
+      border: none;
+    }
+
+    .btn {
+      display: block;
+      padding: 12px 22px;
+      border-radius: 10px;
+      text-decoration: none;
+      cursor: pointer;
+      border: none;
+    }
+
+    .container {
+      margin: 0 auto;
+      padding: 40px;
+
+      display: flex;
+      flex-direction: column;
+      gap: 16px;
+    }
+  </style>
+
+  {% block style %}{% endblock %}
+
+  <body>
+    <div class="container">{% block content %}{% endblock %}</div>
+  </body>
+</html>

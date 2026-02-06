@@ -1,101 +1,147 @@
-<!doctype html>
-<html lang="en">
-  <head>
-    <meta charset="UTF-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>Главная</title>
-  </head>
+{% extends "base.html" %}
 
-  <style>
-    body {
-      margin: 0;
-      padding: 0;
-      box-sizing: border-box;
-      font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-    }
+{% block title %}Главная{% endblock %}
 
-    .container {
-      margin: 0 auto;
-      padding: 40px;
-      display: flex;
-      flex-direction: column;
-      gap: 16px;
-    }
+{% block style %}
+<style>
+  .books {
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    gap: 20px;
+  }
 
-    .actions {
-      border-radius: 20px;
-      background: #1e1e1e;
-      padding: 30px;
-    }
+  .book {
+    padding: 16px;
+    column-count: 1;
+    border-radius: 10px;
+    background: #ffffff;
+  }
+  .book-title {
+    font-size: 24px;
+    margin-bottom: 12px;
+  }
 
-    .actions > select {
-      border-radius: 10px;
-      padding: 12px 24px;
-      appearance: none;
-    }
+  .book-price {
+    margin-top: 12px;
+    color: brown;
+  }
 
-    .books {
-      padding: 30px;
-      border-radius: 20px;
-      background: #f1f1f1;
-      display: grid;
-      grid-template-columns: repeat(4, 1fr);
-      gap: 20px;
-    }
+  .book-actions {
+    display: flex;
+    flex-direction: column;
+    gap: 4px;
+    margin-top: 16px;
+  }
 
-    .book {
-      column-count: 1;
-      border-radius: 10px;
-      padding: 16px;
-      background: #ffffff;
-    }
+  .book-link {
+    display: block;
+  }
 
-    .book-title {
-      font-size: 24px;
-      margin-bottom: 12px;
-    }
+  .form {
+    display: flex;
+    align-items: center;
+    gap: 16px;
+  }
 
-    .book-text {
-      font-size: 14px;
-    }
+  .form-field {
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+  }
 
-    .book-btn {
-      padding: 8px 16px;
-      margin-top: 6px;
-    }
+  .form-label {
+    color: #f1f1f1;
+  }
 
-    .book-price {
-      margin-top: 12px;
-      color: brown;
-    }
-  </style>
+  .pagination-list {
+    list-style: none;
+  }
 
-  <body>
-    <div class="container">
-      <div class="actions">
-        <select name="create" onchange="window.location.href = this.value">
-          <option value="#">Выберите, что нужно добавить...</option>
-          <option value="{% url 'main:create_author' %}">Aвтор</option>
-          <option value="{% url 'main:create_book' %}">Книга</option>
-          <option value="{% url 'main:create_genre' %}">Жанр</option>
-          <option value="{% url 'main:create_lang' %}">Язык</option>
+  .form-btn {
+    font-size: 14px;
+    background: #f1f1f1;
+    color: black;
+  }
+</style>
+{% endblock %}
+
+{% block content %}
+  {% if user_role in 'manager,admin' %}
+  <div class="block block-row bg-dark">
+    <select name="create" class="selector" onchange="window.location.href = this.value">
+      <option disabled selected>Выберите, что нужно добавить...</option>
+      <option value="{% url 'main:create_author' %}">Aвтор</option>
+      <option value="{% url 'main:create_book' %}">Книга</option>
+      <option value="{% url 'main:create_genre' %}">Жанр</option>
+      <option value="{% url 'main:create_lang' %}">Язык</option>
+    </select>
+  </div>
+  {% endif %}
+
+  {% if user_role not in 'gust' %}
+  <div class="block block-row bg-dark">
+    <form method="get" class="block-row">
+      <div class="form-field">
+        <label for="search" class="form-label">Поиск</label>
+        <input type="text" name="search" id="search" class="input" />
+      </div>
+      <div class="form-field">
+        <label for="sort" class="form-label">Сортировка</label>
+        <select name="sort" id="sort" class="selector">
+          <option disabled selected>Выберите вариант сортировки</option>
+          <option value="name-asc">АЯ</option>
+          <option value="name-desc">ЯА</option>
+          <option value="price-asc">По возрастанию цены</option>
+          <option value="price-desc">По убыванию цены</option>
         </select>
       </div>
-
-      <div class="books">
-        {% for book in books %}
-        <div class="book">
-          <div class="book-title"><b>{{ book.name }}</b></div>
-          <div class="book-text"><b>Жанр</b>: {{ book.genre }}</div>
-          <div class="book-text"><b>Автор</b>: {{ book.author }}</div>
-          <div class="book-title book-price"><b>{{ book.price }}</b> &#8381;</div>
-          <button class="book-btn">В корзину</button>
-        </div>
-
-        {% empty %}
-        <div>Пусто</div>
-        {% endfor %}
+      <div class="form-field">
+        <button type="submit" class="btn form-btn dark">Найти</button>
+        <a href="{% url 'main:books' %}" class="btn form-btn">Сброс</a>
       </div>
+    </form>
+  </div>
+  {% endif %}
+
+  <div class="books block bg-light">
+    {% for book in page_obj %}
+    <div class="book">
+      <div class="book-title dark"><b>{{ book.name }}</b></div>
+      <div class="dark"><b>Жанр</b>: {{ book.genre }}</div>
+      <div class="dark"><b>Автор</b>: {{ book.author }}</div>
+      <div class="book-title book-price"><b>{{ book.price }}</b> &#8381;</div>
+      <button class="btn bg-dark light">В корзину</button>
+      {% if user_role in 'manager,admin' %}
+      <div class="book-actions">
+        <a href="/books/update/{{ book.id }}" class="book-link dark">Редактировать</a>
+        <a href="#" class="book-link dark">Удалить</a>
+      </div>
+      {% endif %}
     </div>
-  </body>
-</html>
+    {% empty %}
+    <div>Пусто</div>
+    {% endfor %}
+  </div>
+
+  {% if page_obj.has_other_pages %}
+  <div class="block-row">
+    {% if page_obj.has_previous %}
+    <a
+      href="?page={{ page_obj.previous_page_number }}{% if search_value %}&search={{ search_value }}{% endif %}{% if sort %}&sort={{ sort }}{% endif %}"
+      class="btn bg-light dark"
+    >
+      Предыдущая
+    </a>
+    {% endif %}
+    
+    {% if page_obj.has_next %}
+    <a
+      href="?page={{ page_obj.next_page_number }}{% if search_value %}&search={{ search_value }}{% endif %}{% if sort %}&sort={{ sort }}{% endif %}"
+      class="btn bg-light dark"
+    >
+      Следующая
+    </a>
+    {% endif %}
+  </div>
+  {% endif %}
+{% endblock content%}

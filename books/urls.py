@@ -11,14 +11,14 @@ urlpatterns = [
     ])),
     path('books/', include([
         path('create/', book_create, name='create_book'),
-        # path('update/<int:pk>/', book_update, name='update_book'),
+        path('update/<int:pk>/', book_update, name='update_book'),
     ])),
     path('genre/', include([
         path('create/', genre_create, name='create_genre'),
-        # path('update/<int:pk>/', genre_update, name='update_genre'),
+        path('update/<int:pk>/', genre_update, name='update_genre'),
     ])),
         path('lang/', include([
         path('create/', language_create, name='create_lang'),
-        # path('update/<int:pk>/', language_update, name='update_lang'),
+        path('update/<int:pk>/', language_update, name='update_lang'),
     ])),
 ]
